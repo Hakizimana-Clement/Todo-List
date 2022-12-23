@@ -5,13 +5,23 @@ const _ = require("lodash");
 require("dotenv").config();
 const app = express();
 
-mongoose.connect(
+mongoose.set("strictQuery", true);
+const url =
   "mongodb+srv://" +
-    process.env.DATABASE_USERNAME +
-    ":" +
-    process.env.DATABASE_PASSWORD +
-    "@cluster0.fzfjyqq.mongodb.net/TodoListDB"
-);
+  process.env.DATABASE_USERNAME +
+  ":" +
+  process.env.DATABASE_PASSWORD +
+  "@cluster0.fzfjyqq.mongodb.net/TodoListDB";
+
+mongoose
+  .connect(url)
+  .then(() => {
+    console.log("Connected to database !!");
+  })
+  .catch((err) => {
+    console.log("Connection failed !! " + err.message);
+  });
+
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
